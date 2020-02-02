@@ -4,13 +4,13 @@
 
 // GLEW_STATIC force le linkage statique
 // c-a-d que le code de glew est directement injecte dans l'executable
-#define GLEW_STATIC
 #define WINDOW_X 800.0f
 #define WINDOW_Y 800.0f
 
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include <../../common/GLShader.h>
+#include <GL/freeglut.h>
+
 
 
 
@@ -30,8 +30,7 @@
 // _WIN32 indique un programme Windows
 // _MSC_VER indique la version du compilateur VC++
 #if defined(_WIN32) && defined(_MSC_VER)
-#pragma comment(lib, "glfw3dll.lib")
-#pragma comment(lib, "glew32s.lib")			// glew32.lib si pas GLEW_STATIC
+#pragma comment(lib, "glew32.lib")			// glew32.lib si pas GLEW_STATIC
 #pragma comment(lib, "opengl32.lib")
 #elif defined(__APPLE__)
 #elif defined(__linux__)
