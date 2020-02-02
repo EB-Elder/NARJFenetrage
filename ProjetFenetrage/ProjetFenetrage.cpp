@@ -45,9 +45,6 @@
 
 using namespace std;
 
-float red = 0.0f;
-float blue = 0.0f;
-float green = 0.0f;
 vector<Line> test;
 vector<Point> polygon;
 Line tmpLine;
@@ -101,22 +98,22 @@ void menuFunc(int id)
 	switch (id)
 	{
 
-	case 1:
-		glClearColor(1.0f, 0.0f, 0.f, 1.0f);
-		break;
-	case 2:
-		glClearColor(0.0f, 1.0f, 0.f, 1.0f); 
-		break;
-	case 3:
-		glClearColor(0.0f, 0.0f, 1.f, 1.0f); 
-		break;
-	case 4:
-		cout << "Fenetre";
-		break;
-
-	case 5:
-		cout << "Polygon";
-		break;
+		case 1:
+			tmpLine.switchColor();
+			cout << "Couleur";
+			break;
+		case 2:
+			cout << "Tracé polygone";
+			break;
+		case 3:
+			cout << "Tracé fenêtre";
+			break;
+		case 4:
+			cout << "Fenêtrage";
+			break;
+		case 5:
+			cout << "Remplissage";
+			break;
 	}
 }
 
@@ -129,7 +126,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(WINDOW_X, WINDOW_Y);
-	glutCreateWindow("Projet Fenetrage");
+	glutCreateWindow("Projet Fenêtrage");
 
 
 	glutDisplayFunc(renderScene);
@@ -142,11 +139,11 @@ int main(int argc, char **argv)
 
 	int menu = glutCreateMenu(menuFunc);
 	//add entries to our menu
-	glutAddMenuEntry("Red", 1);
-	glutAddMenuEntry("Blue", 2);
-	glutAddMenuEntry("Green", 3);
-	glutAddMenuEntry("Fenetre", 4);
-	glutAddMenuEntry("Polygon", 5);
+	glutAddMenuEntry("Couleur", 1);
+	glutAddMenuEntry("Tracé polygone", 2);
+	glutAddMenuEntry("Tracé fenêtre", 3);
+	glutAddMenuEntry("Fenêtrage", 4);
+	glutAddMenuEntry("Remplissage", 5);
 
 
 	// attach the menu to the right button

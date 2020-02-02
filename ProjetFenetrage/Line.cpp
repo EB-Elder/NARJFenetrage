@@ -1,11 +1,21 @@
 #define NON_INIT -10.0f
+#define WHITE 0
+#define RED 1
+#define GREEN 2
+#define BLUE 3
+#define YELLOW 4
+#define PURPLE 5
+#define CYAN 6
+#define BLACK 7
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <../../common/GLShader.h>
 #include <iostream>
+#include <vector>
 #include "Point.h"
 #include "Line.h"
+
 
 using namespace std;
 
@@ -25,7 +35,9 @@ void Line::drawLine()
 	if (!isDrawable) return;
 	glBegin(GL_LINES);
 	cout << pos1.getPosX()<< endl;
+	glColor3fv(color.data());
 	glVertex2f(pos1[0], pos1[1]);
+	glColor3fv(color.data());
 	glVertex2f(pos2[0], pos2[1]);
 	glEnd();
 }
@@ -71,5 +83,33 @@ void Line::setPos(float x, float y, float width, float height)
 		
 	}
 	
+}
+
+void Line::switchColor()
+{
+	if (colorCounter > BLACK)
+	{
+		colorCounter = 0;
+	}
+	switch (colorCounter)
+	{
+		case WHITE:
+			color = { 1.0,1.0,1.0 };
+		case RED:
+			color = { 1.0,0.0,0.0 };
+		case GREEN:
+			color = { 0.0,1.0,0.0 };
+		case BLUE:
+			color = { 0.0,0.0,1.0 };
+		case YELLOW:
+			color = { 1.0,1.0,0.0 };
+		case PURPLE:
+			color = { 1.0,0.0,1.0 };
+		case CYAN:
+			color = { 0.0,1.0,1.0 };
+		case BLACK:
+			color = { 0.0,0.0,0.0 };
+	}
+	colorCounter++;
 }
 
