@@ -70,7 +70,7 @@ void clickedScene(int button, int state, int x, int y) {
 		tmpLine.setPos(x, y, WINDOW_X, WINDOW_Y);
 		if (tmpLine.isDrawable)
 		{
-			polygon.push_back(tmpLine.getPos1());
+			
 			test.push_back(tmpLine);
 		}
 	}

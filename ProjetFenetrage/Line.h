@@ -7,20 +7,20 @@ class Line
 		Line();
 		virtual ~Line();
 		void drawLine();
-		Point getPos1();
-		Point getPos2();
-		void setPos(float x, float y, float width, float height);
+		Vecteur getVecteur();
+		Vecteur getNormal();
 		void switchColor();
 		bool isDrawable;
+		void setPos(float x, float y, float width, float height);
 
 		
 	private:
-		Point pos1;
-		Point pos2;
+		
+		Vecteur normalVec;
+		Vecteur lineVec;
 		int colorCounter = 0;
 		bool flipFlop = false;
-		void setPos_1(float x, float y);
-		void setPos_2(float x, float y);
+		bool normalDebug = false;
 		std::vector <GLfloat> color = { 1.0,0.0,0.0 };
 		
 };

@@ -7,13 +7,15 @@
 #define PURPLE 5
 #define CYAN 6
 #define BLACK 7
+#define _USE_MATH_DEFINES
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <../../common/GLShader.h>
 #include <iostream>
 #include <vector>
-#include "Point.h"
+#include <math.h>
+#include "Vecteur.h"
 #include "Line.h"
 
 
@@ -21,6 +23,7 @@ using namespace std;
 
 Line::Line()
 {
+
 }
 
 
@@ -34,33 +37,37 @@ void Line::drawLine()
 
 	if (!isDrawable) return;
 	glBegin(GL_LINES);
-	cout << pos1.getPosX()<< endl;
 	glColor3fv(color.data());
-	glVertex2f(pos1[0], pos1[1]);
+	glVertex2f(lineVec.getPos1[0], lineVec.getPos1[1]);
 	glColor3fv(color.data());
-	glVertex2f(pos2[0], pos2[1]);
+	glVertex2f(lineVec.getPos2[0], lineVec.getPos2[1]);
+
+	if (normalDebug) 
+	{
+		float x = normalVec.getPos2[0] - normalVec.getPos1[0];
+		float y = normalVec.getPos2[1] - normalVec.getPos1[1];
+
+		float offsetX = (normalVec.getPos2[0] + normalVec.getPos1[0]) / 2;
+		float offsetY = (normalVec.getPos2[1] + normalVec.getPos1[1]) / 2;
+
+
+		glVertex2f(offsetX, offsetY);
+		glVertex2f(y + offsetX, -x + offsetY);
+	}
 	glEnd();
 }
 
-Point Line::getPos1()
+Vecteur Line::getVecteur()
 {
-	return pos1;
+	return lineVec;
 }
 
-Point Line::getPos2()
+Vecteur Line::getNormal()
 {
-	return pos2;
+	return normalVec;
 }
 
-void Line::setPos_1(float x, float y)
-{
-	pos1 = Point(x, y);
-}
 
-void Line::setPos_2(float x, float y)
-{
-	pos2 = Point(x, y);
-}
 
 
 void Line::setPos(float x, float y, float width, float height)
@@ -71,15 +78,17 @@ void Line::setPos(float x, float y, float width, float height)
 
 	if (flipFlop == false)
 	{
-		setPos_1(x, y);
+		normalVec.setPos_1(x, y);
 		isDrawable = false;
 		flipFlop = true;
 	}
 	else 
 	{
-		setPos_2(x, y);
+		normalVec.setPos_2(x, y);
 		isDrawable = true;
 		flipFlop = false;
+		lineVec = Vecteur(lineVec.getPos2[0] - lineVec.getPos1[0], lineVec.getPos2[1] - lineVec.getPos1[1]);
+		normalVec = Vecteur(lineVec.getPos2[0] - lineVec.getPos1[0], lineVec.getPos2[1] - lineVec.getPos1[1]);
 		
 	}
 	
