@@ -1,6 +1,5 @@
 #pragma once
 
-using namespace std;
 
 class Line
 {
@@ -22,7 +21,7 @@ class Line
 		bool flipFlop = false;
 		void setPos_1(float x, float y);
 		void setPos_2(float x, float y);
-		vector <GLfloat> color = { 1.0,0.0,0.0 };
+		std::vector <GLfloat> color = { 1.0,0.0,0.0 };
 		
 };
 

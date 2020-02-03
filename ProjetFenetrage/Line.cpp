@@ -95,20 +95,28 @@ void Line::switchColor()
 	{
 		case WHITE:
 			color = { 1.0,1.0,1.0 };
+			break;
 		case RED:
 			color = { 1.0,0.0,0.0 };
+			break;
 		case GREEN:
 			color = { 0.0,1.0,0.0 };
+			break;
 		case BLUE:
 			color = { 0.0,0.0,1.0 };
+			break;
 		case YELLOW:
 			color = { 1.0,1.0,0.0 };
+			break;
 		case PURPLE:
 			color = { 1.0,0.0,1.0 };
+			break;
 		case CYAN:
 			color = { 0.0,1.0,1.0 };
+			break;
 		case BLACK:
 			color = { 0.0,0.0,0.0 };
+			break;
 	}
 	colorCounter++;
 }
