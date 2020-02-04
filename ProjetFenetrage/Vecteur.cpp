@@ -18,8 +18,8 @@ Vecteur::Vecteur(float x, float y)
 
 Vecteur::Vecteur(float Ax, float Ay, float Bx, float By)
 {
-	direction[0] = Bx - By;
-	direction[1] = x - Bx;
+	direction[0] = Ay - Ax;
+	direction[1] = By - Bx;
 }
 
 void Vecteur::setPos_1(float x, float y)
@@ -51,4 +51,10 @@ void Vecteur::setDirection(float X, float Y)
 {
 	direction[0] = X;
 	direction[1] = Y;
+}
+
+void Vecteur::setDirection(float Ax, float Ay, float Bx, float By)
+{
+	direction[0] = Ay - Ax;
+	direction[1] = By - Bx;
 }

@@ -20,5 +20,6 @@ class Vecteur
 		Point& getPos2();
 		float* getDirection();
 		void setDirection(float X, float Y);
+		void setDirection(float Ax, float Ay, float Bx, float By);
 };
 

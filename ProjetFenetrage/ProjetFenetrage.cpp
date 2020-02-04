@@ -41,14 +41,18 @@
 #include <vector>
 #include "Point.h"
 #include "Line.h"
+#include "Operations.h"
 #include "stb_image.h"
 
 using namespace std;
 
-vector<Line> test;
-vector<Point> polygon;
+vector<Line> polygon;
+vector<Line> window;
+vector<Point> polygonPoint;
+vector<Point> windowPoint;
+bool windowMode = false;
 Line tmpLine;
-Point tmpPoint;
+
 
 int** array2D(int N, int M, int V = 0)
 {
@@ -68,10 +72,20 @@ void clickedScene(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		tmpLine.setPos(x, y, WINDOW_X, WINDOW_Y);
+		
 		if (tmpLine.isDrawable)
 		{
-			
-			test.push_back(tmpLine);
+			polygon.push_back(tmpLine);
+		}
+		if (windowMode)
+		{
+			window.push_back(tmpLine);
+			windowPoint.push_back(Point(x, y));
+		}
+		else 
+		{
+			polygonPoint.push_back(Point(x, y));
+
 		}
 	}
 
@@ -82,9 +96,13 @@ void clickedScene(int button, int state, int x, int y) {
 void renderScene(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	for (int i = 0; i < test.size(); i++)
+	for (int i = 0; i < polygon.size(); i++)
 	{
-		test[i].drawLine();
+		polygon[i].drawLine();
+	}
+	for (int j = 0; j < window.size(); j++)
+	{
+		window[j].drawLine();
 	}
 	glutSwapBuffers();
 	glutMouseFunc(clickedScene);
@@ -95,6 +113,7 @@ void renderScene(void) {
 
 void menuFunc(int id)
 {
+	Line tmp;
 	switch (id)
 	{
 
@@ -103,12 +122,25 @@ void menuFunc(int id)
 			cout << "Couleur";
 			break;
 		case 2:
-			cout << "Tracé polygone";
+			windowMode = false;
+			cout << "Tracer polygone";
 			break;
 		case 3:
-			cout << "Tracé fenêtre";
+			windowMode = true;
+			cout << "Tracer fenetre";
 			break;
 		case 4:
+			polygonPoint = Operations::sutherisland(windowPoint, polygonPoint);
+			polygon.clear();
+			
+			for (int i = 0; i < polygonPoint.size(); i++)
+			{
+				tmp.setPos(polygonPoint[i][0], polygonPoint[i][1], WINDOW_X, WINDOW_Y);
+				if (i % 2)
+				{
+					polygon.push_back(tmp);
+				}
+			}
 			cout << "Fenêtrage";
 			break;
 		case 5:

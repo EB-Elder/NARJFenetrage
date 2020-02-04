@@ -22,7 +22,8 @@ class Line
 		int colorCounter = 0;
 		bool flipFlop = false;
 		bool normalDebug = false;
-		std::vector <GLfloat> color = { 1.0,0.0,0.0 };
+		bool lineDebug = false;
+		std::vector <float> color = { 1.0,0.0,0.0 };
 		
 };
 

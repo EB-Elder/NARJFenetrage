@@ -37,15 +37,22 @@ void Line::drawLine()
 
 	if (!isDrawable) return;
 	glBegin(GL_LINES);
-	cout << "___x0___"<<lineVec.getPos1()[0];
-	cout << "___y0___"<<lineVec.getPos1()[1];
-	cout << "___x1___"<<lineVec.getPos2()[0];
-	cout << "___y1___"<<lineVec.getPos2()[1];
+	
 	cout << endl;
 	glColor3fv(color.data());
 	glVertex2f(lineVec.getPos1()[0], lineVec.getPos1()[1]);
 	glColor3fv(color.data());
-	glVertex2f(lineVec.getPos2()[0]+1, lineVec.getPos2()[1]+1);
+	glVertex2f(lineVec.getPos2()[0], lineVec.getPos2()[1]);
+
+	if (lineDebug)
+	{
+		cout << "___x0___" << lineVec.getPos1()[0];
+		cout << "___y0___" << lineVec.getPos1()[1];
+		cout << "___x1___" << lineVec.getPos2()[0];
+		cout << "___y1___" << lineVec.getPos2()[1];
+	}
+
+
 
 	if (normalDebug) 
 	{
@@ -92,8 +99,8 @@ void Line::setPos(float x, float y, float width, float height)
 		lineVec.setPos_2(x, y);
 		isDrawable = true;
 		flipFlop = false;
-		lineVec = Vecteur(lineVec.getPos2()[0] - lineVec.getPos1()[0], lineVec.getPos2()[1] - lineVec.getPos1()[1]);
-		normalVec = Vecteur(lineVec.getPos2()[0] - lineVec.getPos1()[0], -(lineVec.getPos2()[1] - lineVec.getPos1()[1]));
+		lineVec.setDirection(lineVec.getPos2()[0] - lineVec.getPos1()[0], lineVec.getPos2()[1] - lineVec.getPos1()[1]);
+		normalVec.setDirection(lineVec.getPos2()[0] - lineVec.getPos1()[0], -(lineVec.getPos2()[1] - lineVec.getPos1()[1]));
 		
 	}
 	
@@ -134,4 +141,5 @@ void Line::switchColor()
 	}
 	colorCounter++;
 }
+
 
