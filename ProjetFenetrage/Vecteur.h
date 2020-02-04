@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Point.h"
 
 class Vecteur
 {
@@ -15,8 +16,8 @@ class Vecteur
 		Vecteur(float Ax, float Ay, float Bx, float By);
 		void setPos_1(float x, float y);
 		void setPos_2(float x, float y);
-		Point getPos1();
-		Point getPos2();
+		Point& getPos1();
+		Point& getPos2();
 		float* getDirection();
 		void setDirection(float X, float Y);
 };

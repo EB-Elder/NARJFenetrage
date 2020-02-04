@@ -37,18 +37,23 @@ void Line::drawLine()
 
 	if (!isDrawable) return;
 	glBegin(GL_LINES);
+	cout << "___x0___"<<lineVec.getPos1()[0];
+	cout << "___y0___"<<lineVec.getPos1()[1];
+	cout << "___x1___"<<lineVec.getPos2()[0];
+	cout << "___y1___"<<lineVec.getPos2()[1];
+	cout << endl;
 	glColor3fv(color.data());
-	glVertex2f(lineVec.getPos1[0], lineVec.getPos1[1]);
+	glVertex2f(lineVec.getPos1()[0], lineVec.getPos1()[1]);
 	glColor3fv(color.data());
-	glVertex2f(lineVec.getPos2[0], lineVec.getPos2[1]);
+	glVertex2f(lineVec.getPos2()[0]+1, lineVec.getPos2()[1]+1);
 
 	if (normalDebug) 
 	{
-		float x = normalVec.getPos2[0] - normalVec.getPos1[0];
-		float y = normalVec.getPos2[1] - normalVec.getPos1[1];
+		float x = lineVec.getPos2()[0] - normalVec.getPos1()[0];
+		float y = normalVec.getPos2()[1] - normalVec.getPos1()[1];
 
-		float offsetX = (normalVec.getPos2[0] + normalVec.getPos1[0]) / 2;
-		float offsetY = (normalVec.getPos2[1] + normalVec.getPos1[1]) / 2;
+		float offsetX = (normalVec.getPos2()[0] + normalVec.getPos1()[0]) / 2;
+		float offsetY = (normalVec.getPos2()[1] + normalVec.getPos1()[1]) / 2;
 
 
 		glVertex2f(offsetX, offsetY);
@@ -78,17 +83,17 @@ void Line::setPos(float x, float y, float width, float height)
 
 	if (flipFlop == false)
 	{
-		normalVec.setPos_1(x, y);
+		lineVec.setPos_1(x, y);
 		isDrawable = false;
 		flipFlop = true;
 	}
 	else 
 	{
-		normalVec.setPos_2(x, y);
+		lineVec.setPos_2(x, y);
 		isDrawable = true;
 		flipFlop = false;
-		lineVec = Vecteur(lineVec.getPos2[0] - lineVec.getPos1[0], lineVec.getPos2[1] - lineVec.getPos1[1]);
-		normalVec = Vecteur(lineVec.getPos2[0] - lineVec.getPos1[0], lineVec.getPos2[1] - lineVec.getPos1[1]);
+		lineVec = Vecteur(lineVec.getPos2()[0] - lineVec.getPos1()[0], lineVec.getPos2()[1] - lineVec.getPos1()[1]);
+		normalVec = Vecteur(lineVec.getPos2()[0] - lineVec.getPos1()[0], -(lineVec.getPos2()[1] - lineVec.getPos1()[1]));
 		
 	}
 	

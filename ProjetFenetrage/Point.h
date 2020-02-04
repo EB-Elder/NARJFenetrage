@@ -1,9 +1,11 @@
 #pragma once
+
+
 class Point
 {
 
 	private:
-		float coord[2] = { 0,0 };
+		float coord[2];
 
 	public:
 		float getPosX();

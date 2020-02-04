@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Vecteur.h"
 
 class Line
 {
