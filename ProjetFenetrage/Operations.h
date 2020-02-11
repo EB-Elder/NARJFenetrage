@@ -13,6 +13,7 @@ class Operations
 		static vector<Point> clip(vector<Point>& polygonPoint, int x1, int y1, int x2, int y2);
 
 	public:
+		static void remplissage();
 		static vector<Point> sutherisland(const vector<Point>& windowPoint , vector<Point>& polygonPoint);
 		static int x_intersect(int Ax1, int Ay1, int Ax2, int Ay2,
 						int Bx1, int By1, int Bx2, int By2);
