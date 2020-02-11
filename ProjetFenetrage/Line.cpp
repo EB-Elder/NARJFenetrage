@@ -26,7 +26,6 @@ Line::Line()
 
 }
 
-
 Line::~Line()
 {
 	

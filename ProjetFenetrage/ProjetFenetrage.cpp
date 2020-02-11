@@ -73,20 +73,24 @@ void clickedScene(int button, int state, int x, int y) {
 	{
 		tmpLine.setPos(x, y, WINDOW_X, WINDOW_Y);
 		
-		if (tmpLine.isDrawable)
-		{
-			polygon.push_back(tmpLine);
-		}
+		
 		if (windowMode)
 		{
 			window.push_back(tmpLine);
 			windowPoint.push_back(Point(x, y));
+
 		}
-		else 
+		else
 		{
 			polygonPoint.push_back(Point(x, y));
 
 		}
+		if (tmpLine.isDrawable)
+		{
+			polygon.push_back(tmpLine);
+			cout << window.size() << endl;
+		}
+		
 	}
 
 	
@@ -127,16 +131,19 @@ void menuFunc(int id)
 			break;
 		case 3:
 			windowMode = true;
+			tmpLine.switchColor();
+			tmpLine.switchColor();
+			tmpLine.switchColor();
 			cout << "Tracer fenetre";
 			break;
 		case 4:
 			polygonPoint = Operations::sutherisland(windowPoint, polygonPoint);
 			polygon.clear();
 			
-			for (int i = 0; i < polygonPoint.size(); i++)
+			for (int i = 1; i < polygonPoint.size(); i++)
 			{
 				tmp.setPos(polygonPoint[i][0], polygonPoint[i][1], WINDOW_X, WINDOW_Y);
-				if (i % 2)
+				if (tmp.isDrawable)
 				{
 					polygon.push_back(tmp);
 				}
