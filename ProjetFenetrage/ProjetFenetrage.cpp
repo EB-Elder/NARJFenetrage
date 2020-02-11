@@ -54,19 +54,6 @@ bool windowMode = false;
 Line tmpLine;
 
 
-int** array2D(int N, int M, int V = 0)
-{
-	int ** tab = new int*[N];
-	
-	return tab;
-}
-
-void motion(int x, int y)
-{
-	cout << x;
-}
-
-
 void clickedScene(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
