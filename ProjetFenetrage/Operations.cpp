@@ -70,12 +70,9 @@ vector<Point> Operations::clip(vector<Point>& polygonPoint,
 		// Copying new points into original array 
 		// and changing the no. of vertices 
 		poly_size = new_poly_size;
-		if (new_poly_size > polygonPoint.size())
+		for (int i = 0; i < 20; i++)
 		{
-			for (int i = 0; i < new_poly_size - polygonPoint.size(); i++)
-			{
 				polygonPoint.push_back(Point(0, 0));
-			}
 		}
 		for (int i = 0; i < poly_size; i++)
 		{	
