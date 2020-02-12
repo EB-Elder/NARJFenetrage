@@ -6,6 +6,7 @@ class Line
 {
 	public:
 		Line();
+		Line(float P1x, float P1y, float P2x, float P2y, float width, float height);
 		virtual ~Line();
 		void drawLine();
 		Vecteur getVecteur();

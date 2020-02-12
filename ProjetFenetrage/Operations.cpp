@@ -1,112 +1,99 @@
 
-
+#define SIZE_POLY 100
 #include <iostream>
 #include "Operations.h"
 
-vector<Point> Operations::clip(vector<Point>& polygonPoint,
+void Operations::clip(vector<Point>& polygonPointRef,
 	int x1, int y1, int x2, int y2)
 {
-		int poly_size = polygonPoint.size();
-		vector<Point> newPolygon;
-		int new_poly_size = 0;
 
-		// (ix,iy),(kx,ky) are the co-ordinate values of 
-		// the points 
-		for (int i = 0; i < poly_size; i++)
-		{
-			// i and k form a line in polygon 
-			int k = (i + 1) % poly_size;
-			int ix = polygonPoint[i][0], iy = polygonPoint[i][1];
-			int kx = polygonPoint[k][0], ky = polygonPoint[k][1];
-
-			// Calculating position of first point 
-			// w.r.t. clipper line 
-			int i_pos = (x2 - x1) * (iy - y1) - (y2 - y1) * (ix - x1);
-
-			// Calculating position of second point 
-			// w.r.t. clipper line 
-			int k_pos = (x2 - x1) * (ky - y1) - (y2 - y1) * (kx - x1);
-
-			// Case 1 : When both points are inside 
-			if (i_pos < 0 && k_pos < 0)
-			{
-				//Only second point is added 
-				newPolygon.push_back(Point(kx, ky));
-				new_poly_size++;
-			}
-
-			// Case 2: When only first point is outside 
-			else if (i_pos >= 0 && k_pos < 0)
-			{
-				// Point of intersection with edge 
-				// and the second point is added 
-				newPolygon.push_back(Point(
-					(x_intersect(x1,y1, x2, y2, ix, iy, kx, ky)),
-					(y_intersect(x1,y1, x2, y2, ix, iy, kx, ky))));
-
-				new_poly_size++;
-
-				newPolygon.push_back(Point(kx, ky));
-				new_poly_size++;
-			}
-
-			// Case 3: When only second point is outside 
-			else if (i_pos < 0 && k_pos >= 0)
-			{
-				//Only point of intersection with edge is added 
-				newPolygon.push_back(Point(
-					(x_intersect(x1, y1, x2, y2, ix, iy, kx, ky)),
-					(y_intersect(x1, y1, x2, y2, ix, iy, kx, ky))));
-				new_poly_size++;
-			}
-
-			// Case 4: When both points are outside 
-			else
-			{
-				//No points are added 
-			}
-		}
-
-		// Copying new points into original array 
-		// and changing the no. of vertices 
-		poly_size = new_poly_size;
-		for (int i = 0; i < 20; i++)
-		{
-				polygonPoint.push_back(Point(0, 0));
-		}
-		for (int i = 0; i < poly_size; i++)
-		{	
-			polygonPoint[i][0] = newPolygon[i][0];
-			polygonPoint[i][1] = newPolygon[i][1];
-		}
-
-		return polygonPoint;
+		
 }
 
-vector<Point> Operations::sutherisland(const vector<Point>& windowPoint, vector<Point>& polygonPoint)
+void Operations::sutherisland(vector<Point>& subjectPolygon, vector<Point>& clipPolygon)
 {
-	int clipper_size = windowPoint.size();
-	//i and k are two consecutive indexes 
-	for (int i = 0; i < clipper_size; i++)
+	Point cp1, cp2, s, e;
+	vector<Point> inputPolygon, newPolygon;
+
+
+	for (int d = 0; d < SIZE_POLY; d++)
 	{
-		int k = (i + 1) % clipper_size;
+		inputPolygon.push_back(Point(0, 0));
+		newPolygon.push_back(Point(0, 0));
+	}
 
-		// We pass the current array of vertices, it's size 
-		// and the end points of the selected clipper line 
-		polygonPoint = clip(polygonPoint, windowPoint[i][0],
-			windowPoint[i][1], windowPoint[k][0],
-			windowPoint[k][1]);
-	} 
+	for (int i = 0; i < subjectPolygon.size(); i++)
+		newPolygon[i] = subjectPolygon[i];
+		
 
-	// Printing vertices of clipped polygon 
-	for (int i = 0; i < polygonPoint.size(); i++)
-		cout << '(' << polygonPoint[i][0] <<
-		", " << polygonPoint[i][1] << ") ";
+	int newPolygonSize = subjectPolygon.size();
 
-	return polygonPoint;
+	for (int j = 0; j < clipPolygon.size(); j++)
+	{
+		// copy new polygon to input polygon & set counter to 0
+		for (int k = 0; k < newPolygonSize; k++) { inputPolygon[k] = newPolygon[k]; }
+		int counter = 0;
+
+		// get clipping polygon edge
+		cp1 = clipPolygon[j];
+		cp2 = clipPolygon[(j + 1) % clipPolygon.size()];
+
+		for (int i = 0; i < newPolygonSize; i++)
+		{
+			// get subject polygon edge
+			s = inputPolygon[i];
+			e = inputPolygon[(i + 1) % newPolygonSize];
+			bool tst = inside(s, cp1, cp2);
+			// Case 1: Both vertices are inside:
+			// Only the second vertex is added to the output list
+			if (inside(s, cp1, cp2) && inside(e, cp1, cp2))
+				newPolygon[counter++] = e;
+
+			// Case 2: First vertex is outside while second one is inside:
+			// Both the point of intersection of the edge with the clip boundary
+			// and the second vertex are added to the output list
+			else if (!inside(s, cp1, cp2) && inside(e, cp1, cp2))
+			{
+				newPolygon[counter++] = intersection(cp1, cp2, s, e);
+				newPolygon[counter++] = e;
+			}
+
+			// Case 3: First vertex is inside while second one is outside:
+			// Only the point of intersection of the edge with the clip boundary
+			// is added to the output list
+			else if (inside(s, cp1, cp2) && !inside(e, cp1, cp2))
+				newPolygon[counter++] = intersection(cp1, cp2, s, e);
+
+			// Case 4: Both vertices are outside
+			else if (!inside(s, cp1, cp2) && !inside(e, cp1, cp2))
+			{
+				// No vertices are added to the output list
+			}
+		}
+		// set new polygon size
+		newPolygonSize = counter;
+	}
+
+	subjectPolygon = newPolygon;
+
 }
 
+Point Operations::intersection(Point cp1, Point cp2, Point s, Point e)
+{
+	Point dc = { cp1[0] - cp2[0], cp1[1] - cp2[1] };
+	Point dp = { s[0] - e[0], s[1] - e[1] };
 
+	float n1 = cp1[0] * cp2[1] - cp1[1] * cp2[0];
+	float n2 = s[0] * e[1] - s[1] * e[0];
+	float n3 = 1.0 / (dc[0] * dp[1] - dc[1] * dp[0]);
+
+	return { (n1 * dp[0] - n2 * dc[0]) * n3, (n1 * dp[1] - n2 * dc[1]) * n3 };
+} 
+
+bool Operations::inside(Point p, Point p1, Point p2)
+{
+	return (p2[1]- p1[1]) * p[0] + (p1[0] - p2[0]) * p[1] + (p2[0] * p1[1] - p1[0] * p2[1]) < 0;
+}
 
 int Operations::x_intersect(int Ax1, int Ay1, int Ax2, int Ay2,
 							int Bx1, int By1, int Bx2, int By2)

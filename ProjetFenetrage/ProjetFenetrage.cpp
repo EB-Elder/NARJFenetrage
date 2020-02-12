@@ -104,7 +104,7 @@ void renderScene(void) {
 
 void menuFunc(int id)
 {
-	Line tmp;
+	
 	switch (id)
 	{
 
@@ -124,18 +124,15 @@ void menuFunc(int id)
 			cout << "Tracer fenetre";
 			break;
 		case 4:
-			polygonPoint = Operations::sutherisland(windowPoint, polygonPoint);
+			Operations::sutherisland(polygonPoint, windowPoint);
 			polygon.clear();
 			
-			for (int i = 1; i < polygonPoint.size(); i++)
+			for (int i = 0; i < polygonPoint.size(); i+=2)
 			{
-				if (polygonPoint[i][0] != 0 && polygonPoint[i][1] != 0)
+				Line tmp(polygonPoint[i][0], polygonPoint[i][1], polygonPoint[i + 1][0], polygonPoint[i + 1][1], WINDOW_X, WINDOW_Y);
+				if (tmp.isDrawable)
 				{
-					tmp.setPos(polygonPoint[i][0], polygonPoint[i][1], WINDOW_X, WINDOW_Y);
-					if (tmp.isDrawable)
-					{
-						polygon.push_back(tmp);
-					}
+					polygon.push_back(tmp);
 				}
 				
 			}

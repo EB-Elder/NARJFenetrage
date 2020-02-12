@@ -26,6 +26,12 @@ Line::Line()
 
 }
 
+Line::Line(float P1x, float P1y, float P2x, float P2y, float width, float height)
+{
+	setPos(P1x, P1y, width, height);
+	setPos(P2x, P2y, width, height);
+}
+
 Line::~Line()
 {
 	
