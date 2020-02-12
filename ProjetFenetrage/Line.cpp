@@ -93,6 +93,7 @@ void Line::setPos(float x, float y, float width, float height)
 
 	x = -1.0f + 2 * x / width;
 	y = 1.0f - 2 * y / height;
+	pointsTab.push_back(Point(x, y));
 
 	if (flipFlop == false)
 	{

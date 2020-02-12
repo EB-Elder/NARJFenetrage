@@ -129,12 +129,15 @@ void menuFunc(int id)
 			
 			for (int i = 0; i < polygonPoint.size(); i+=2)
 			{
-				Line tmp(polygonPoint[i][0], polygonPoint[i][1], polygonPoint[i + 1][0], polygonPoint[i + 1][1], WINDOW_X, WINDOW_Y);
-				if (tmp.isDrawable)
+				if (polygonPoint[i][0] != 0 && polygonPoint[i][1] != 0 && polygonPoint[i+1][0] != 0 && polygonPoint[i+1][1] != 0)
 				{
-					polygon.push_back(tmp);
+					Line tmp(polygonPoint[i][0], polygonPoint[i][1], polygonPoint[i + 1][0], polygonPoint[i + 1][1], WINDOW_X, WINDOW_Y);
+					if (tmp.isDrawable)
+					{
+						polygon.push_back(tmp);
+					}
 				}
-				
+
 			}
 			cout << "Fenêtrage";
 			break;

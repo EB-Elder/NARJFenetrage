@@ -2,6 +2,8 @@
 
 #include "Vecteur.h"
 
+using namespace std;
+
 class Line
 {
 	public:
@@ -20,6 +22,7 @@ class Line
 		
 		Vecteur normalVec;
 		Vecteur lineVec;
+		vector<Point> pointsTab;
 		int colorCounter = 0;
 		bool flipFlop = false;
 		bool normalDebug = false;
