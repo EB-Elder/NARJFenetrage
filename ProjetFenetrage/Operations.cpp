@@ -13,68 +13,44 @@ void Operations::clip(vector<Point>& polygonPointRef,
 void Operations::sutherisland(vector<Point>& subjectPolygon, vector<Point>& clipPolygon)
 {
 	Point cp1, cp2, s, e;
-	vector<Point> inputPolygon, newPolygon;
+	vector<Point> PolygonTemp, PolygonS;
 
+	PolygonTemp = subjectPolygon;
 
-	for (int d = 0; d < SIZE_POLY; d++)
+	for (int i = 0; i < clipPolygon.size(); i++)
 	{
-		inputPolygon.push_back(Point(0, 0));
-		newPolygon.push_back(Point(0, 0));
-	}
-
-	for (int i = 0; i < subjectPolygon.size(); i++)
-		newPolygon[i] = subjectPolygon[i];
-		
-
-	int newPolygonSize = subjectPolygon.size();
-
-	for (int j = 0; j < clipPolygon.size(); j++)
-	{
-		// copy new polygon to input polygon & set counter to 0
-		for (int k = 0; k < newPolygonSize; k++) { inputPolygon[k] = newPolygon[k]; }
-		int counter = 0;
-
-		// get clipping polygon edge
-		cp1 = clipPolygon[j];
-		cp2 = clipPolygon[(j + 1) % clipPolygon.size()];
-
-		for (int i = 0; i < newPolygonSize; i++)
+		PolygonS.clear();
+		cp1 = clipPolygon[i];
+		cp2 = clipPolygon[(i + 1) % clipPolygon.size()];
+		for (int j = 0; j < PolygonTemp.size(); j++)
 		{
-			// get subject polygon edge
-			s = inputPolygon[i];
-			e = inputPolygon[(i + 1) % newPolygonSize];
-			bool tst = inside(s, cp1, cp2);
-			// Case 1: Both vertices are inside:
-			// Only the second vertex is added to the output list
-			if (inside(s, cp1, cp2) && inside(e, cp1, cp2))
-				newPolygon[counter++] = e;
+			s = PolygonTemp[j];
+			e = PolygonTemp[(j + 1) % PolygonTemp.size()];
 
-			// Case 2: First vertex is outside while second one is inside:
-			// Both the point of intersection of the edge with the clip boundary
-			// and the second vertex are added to the output list
+			if (inside(s, cp1, cp2) && inside(e, cp1, cp2))
+			{
+				PolygonS.push_back(e);
+			}
 			else if (!inside(s, cp1, cp2) && inside(e, cp1, cp2))
 			{
-				newPolygon[counter++] = intersection(cp1, cp2, s, e);
-				newPolygon[counter++] = e;
+				PolygonS.push_back(intersection(cp1, cp2, s, e));
+				PolygonS.push_back(e);
 			}
-
-			// Case 3: First vertex is inside while second one is outside:
-			// Only the point of intersection of the edge with the clip boundary
-			// is added to the output list
 			else if (inside(s, cp1, cp2) && !inside(e, cp1, cp2))
-				newPolygon[counter++] = intersection(cp1, cp2, s, e);
-
-			// Case 4: Both vertices are outside
-			else if (!inside(s, cp1, cp2) && !inside(e, cp1, cp2))
 			{
-				// No vertices are added to the output list
+				PolygonS.push_back(intersection(cp1, cp2, s, e));
 			}
+
 		}
-		// set new polygon size
-		newPolygonSize = counter;
+		if(PolygonS.size() > 0)
+			PolygonTemp = PolygonS;
+
 	}
 
-	subjectPolygon = newPolygon;
+	subjectPolygon = PolygonTemp;
+	int u = 0;
+
+	
 
 }
 

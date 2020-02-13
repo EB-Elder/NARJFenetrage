@@ -37,6 +37,7 @@ void Point::drawPoint()
 
 Point::Point(float x, float y)
 {
+
 	coord[0] = x;
 	coord[1] = y;
 }

@@ -58,25 +58,25 @@ void clickedScene(int button, int state, int x, int y) {
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		tmpLine.setPos(x, y, WINDOW_X, WINDOW_Y);
-		
-		
+		float xf = -1.0f + 2 * x / WINDOW_X;
+		float yf = 1.0f - 2 * y / WINDOW_Y;
+
 		if (windowMode)
 		{
-			window.push_back(tmpLine);
-			windowPoint.push_back(Point(x, y));
+			//window.push_back(tmpLine);
+			windowPoint.push_back(Point(xf, yf));
 
 		}
 		else
 		{
-			polygonPoint.push_back(Point(x, y));
+			polygonPoint.push_back(Point(xf, yf));
 
 		}
-		if (tmpLine.isDrawable)
-		{
-			polygon.push_back(tmpLine);
-			cout << window.size() << endl;
-		}
+		//if (tmpLine.isDrawable)
+		//{
+		//	polygon.push_back(tmpLine);
+		//	cout << window.size() << endl;
+		//}
 		
 	}
 
@@ -87,14 +87,32 @@ void clickedScene(int button, int state, int x, int y) {
 void renderScene(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	for (int i = 0; i < polygon.size(); i++)
+	//for (int i = 0; i < polygon.size(); i++)
+	//{
+	//	polygon[i].drawLine();
+	//}
+	//for (int j = 0; j < window.size(); j++)
+	//{
+	//	window[j].drawLine();
+	//}
+	glBegin(GL_LINES);
+	//Tracer de polygon
+	for (int i = 0; i < polygonPoint.size(); i++)
 	{
-		polygon[i].drawLine();
+		glColor3f(255, 255, 255);
+		glVertex2f(polygonPoint[i][0], polygonPoint[i][1]);
+		glVertex2f(polygonPoint[(i+1)% polygonPoint.size()][0], polygonPoint[(i+1)% polygonPoint.size()][1]);
+		
 	}
-	for (int j = 0; j < window.size(); j++)
+	
+	//Tracer de fenetre
+	for (int j = 0; j < windowPoint.size(); j++)
 	{
-		window[j].drawLine();
+		glColor3f(255, 0, 0);
+		glVertex2f(windowPoint[j][0], windowPoint[j][1]);
+		glVertex2f(windowPoint[(j + 1) % windowPoint.size()][0], windowPoint[(j + 1) % windowPoint.size()][1]);
 	}
+	glEnd();
 	glutSwapBuffers();
 	glutMouseFunc(clickedScene);
 
@@ -125,20 +143,6 @@ void menuFunc(int id)
 			break;
 		case 4:
 			Operations::sutherisland(polygonPoint, windowPoint);
-			polygon.clear();
-			
-			for (int i = 0; i < polygonPoint.size(); i+=2)
-			{
-				if (polygonPoint[i][0] != 0 && polygonPoint[i][1] != 0 && polygonPoint[i+1][0] != 0 && polygonPoint[i+1][1] != 0)
-				{
-					Line tmp(polygonPoint[i][0], polygonPoint[i][1], polygonPoint[i + 1][0], polygonPoint[i + 1][1], WINDOW_X, WINDOW_Y);
-					if (tmp.isDrawable)
-					{
-						polygon.push_back(tmp);
-					}
-				}
-
-			}
 			cout << "Fenêtrage";
 			break;
 		case 5:
