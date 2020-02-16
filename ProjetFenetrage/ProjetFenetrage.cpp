@@ -50,9 +50,23 @@ vector<Line> polygon;
 vector<Line> window;
 vector<Point> polygonPoint;
 vector<Point> windowPoint;
+vector<Point> fillingPoints;
 bool windowMode = false;
+bool sensTrigo = false;
 Line tmpLine;
 
+
+void sensClick(Point p, Point p1, Point p2)
+{
+	if ((p2[1] - p1[1]) * p[0] + (p1[0] - p2[0]) * p[1] + (p2[0] * p1[1] - p1[0] * p2[1]) < 0)
+	{
+		sensTrigo = true;
+	}
+	else
+	{
+		sensTrigo = false;
+	}
+}
 
 void clickedScene(int button, int state, int x, int y) {
 
@@ -61,9 +75,13 @@ void clickedScene(int button, int state, int x, int y) {
 		float xf = -1.0f + 2 * x / WINDOW_X;
 		float yf = 1.0f - 2 * y / WINDOW_Y;
 
+
 		if (windowMode)
 		{
-			//window.push_back(tmpLine);
+			if (windowPoint.size() > 2)
+			{
+				sensClick(windowPoint[0], windowPoint[1], windowPoint[2]);
+			}
 			windowPoint.push_back(Point(xf, yf));
 
 		}
@@ -72,11 +90,6 @@ void clickedScene(int button, int state, int x, int y) {
 			polygonPoint.push_back(Point(xf, yf));
 
 		}
-		//if (tmpLine.isDrawable)
-		//{
-		//	polygon.push_back(tmpLine);
-		//	cout << window.size() << endl;
-		//}
 		
 	}
 
@@ -87,14 +100,21 @@ void clickedScene(int button, int state, int x, int y) {
 void renderScene(void) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//for (int i = 0; i < polygon.size(); i++)
-	//{
-	//	polygon[i].drawLine();
-	//}
-	//for (int j = 0; j < window.size(); j++)
-	//{
-	//	window[j].drawLine();
-	//}
+	if (fillingPoints.size() > 1)
+	{
+		for (int n = 0; n < fillingPoints.size() - 1; n++)
+		{
+
+			glBegin(GL_LINES);
+
+			glVertex2f(fillingPoints[n][0], fillingPoints[n][1]);
+			glVertex2f(fillingPoints[n + 1][0], fillingPoints[n + 1][1]);
+
+			glEnd();
+
+			n += 1;
+		}
+	}
 	glBegin(GL_LINES);
 	//Tracer de polygon
 	for (int i = 0; i < polygonPoint.size(); i++)
@@ -142,10 +162,11 @@ void menuFunc(int id)
 			cout << "Tracer fenetre";
 			break;
 		case 4:
-			Operations::sutherisland(polygonPoint, windowPoint);
+			Operations::sutherisland(polygonPoint, windowPoint, sensTrigo);
 			cout << "Fenêtrage";
 			break;
 		case 5:
+			Operations::filling(polygonPoint, fillingPoints, WINDOW_X, WINDOW_Y);
 			cout << "Remplissage";
 			break;
 	}
